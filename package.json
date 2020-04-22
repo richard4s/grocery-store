@@ -25,6 +25,7 @@
     "expo-web-browser": "~8.1.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
+    "react-horizontal-scrolling-menu": "^0.7.7",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-safe-area-context": "0.7.3",
