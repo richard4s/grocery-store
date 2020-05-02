@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "HelloWorld",
+    "name": "Kliine Grocery",
     "slug": "grocery-store",
     "platforms": [
       "ios",
@@ -24,6 +24,8 @@
     ],
     "ios": {
       "supportsTablet": true
-    }
+    },
+    "description": "Grocery delivery app",
+    "githubUrl": "https://github.com/richard4s/grocery-store"
   }
 }
