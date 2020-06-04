@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, TouchableHighlight } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, ImageBackground, TextInput, KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { MonoText } from '../../components/StyledText';
@@ -11,13 +11,22 @@ import appLogo from '../../assets/images/logo.png';
 
 import axiosHelper from '../../constants/AxiosHelper';
 
-
-export default function Signin({navigation}) {
+export default function Signup({navigation}) {
     const [ onChangeText] = React.useState('');
+    const [firstName, setFirstName] = React.useState('');
     
     // onChangeText = (text) => {
     //     console.log(text)
     // }
+    // console.log('name', firstName)
+
+  
+
+    React.useEffect(() => {
+      console.log(firstName);
+    }, [firstName]);
+
+
 
   return (
     <View style={styles.container}>
@@ -27,17 +36,42 @@ export default function Signin({navigation}) {
             </View>
 
             <ScrollView contentContainerStyle={styles.contentContainer}>
-                <Text style={styles.subHead}>Sign in</Text>
-                <MonoText style={styles.bodyText}>Please enter your credentials</MonoText>
+                <Text style={styles.subHead}>Sign up</Text>
+                <MonoText style={styles.bodyText}>Let's get started</MonoText>
 
-                <View style={styles.fields}>
+                
+                <KeyboardAvoidingView
+                    behavior={Platform.OS == "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={30} >
+                    <View style={styles.fields}>
+
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Firstname'}
+                            onChangeText={(firstName) => setFirstName(firstName)}
+                            underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
+                        />
+                    </View>
+
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Lastname'}
+                            onChangeText={(email) => email}
+                            underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
+                        />
+                    </View>
+
                     <View style={styles.inputField}>
                         <Ionicons style={styles.mainIcon} name="ios-mail" size={20} color="#ff9500"/>
                         <TextInput
                             style={styles.input}
                             placeholder={'Email'}
-                            onChangeText={(email) => email} returnKeyType={'done'}
-                            underlineColorAndroid="transparent" keyboardType="email-address"
+                            onChangeText={(email) => email}
+                            underlineColorAndroid="transparent" keyboardType="email-address" returnKeyType={'done'}
                         />
                     </View>
 
@@ -51,16 +85,18 @@ export default function Signin({navigation}) {
                         />
                     </View>
 
-                    <TouchableOpacity style={styles.authButton} onPress={() => {navigation.navigate('Main')}}>
-                        <Text style={styles.authText}>Sign in</Text>
+                    <TouchableOpacity style={styles.authButton} onPress={() => alert('signed in')}>
+                        <Text style={styles.authText}>Sign up</Text>
                     </TouchableOpacity>
 
                     <View style={styles.bottomView}>
-                        <Text style={styles.bottomLinks} onPress={() => {navigation.navigate('Signup')}}>Don't have an account?</Text>
-                        <Text style={styles.bottomLinks} onPress={() => {navigation.navigate('ForgotPassword')}}>Forgot password?</Text>
+                        <Text style={styles.bottomLinks} onPress={() => {navigation.navigate('Signin')}}>Already have an account?</Text>
                     </View>
+
+                    
                     
                 </View>
+                </KeyboardAvoidingView>
             </ScrollView>
             
         </ImageBackground>
@@ -70,7 +106,7 @@ export default function Signin({navigation}) {
   );
 }
 
-Signin.navigationOptions = {
+Signup.navigationOptions = {
   header: null,
 };
 
@@ -81,7 +117,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     marginHorizontal: 15,
-    marginTop: 40
+    marginTop: 10
   },
   authText: {
     fontSize: 16,
@@ -152,7 +188,7 @@ const styles = StyleSheet.create({
   },
   logoView: {
       alignItems: 'center',
-      marginTop: 85
+      marginTop: 60
   },
   inputField: {
     flex: 1,

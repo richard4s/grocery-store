@@ -15,7 +15,7 @@ export default function Signup({navigation}) {
   
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
-    const [emailAddress, setEmail] = React.useState('');
+    const [email, setEmail] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [confirmPassword, setConfirmPassword] = React.useState('');
@@ -26,21 +26,21 @@ export default function Signup({navigation}) {
     //   console.log(firstName, '-', lastName, '-', email, '-', password);
     // });
 
-    console.log('name', firstName, lastName, 'email: ->', emailAddress, password)
+    console.log('name', firstName, lastName, email, password)
 
     const register = () => {
       axiosHelper.post('/register', {
         firstName: firstName,
         lastName: lastName,
-        email: emailAddress,
+        email: email,
         phone: phone,
         password: password
       })
-      .then( (response) => {
+      .then(function (response) {
         console.log(response);
       })
-      .catch( (error) => {
-        console.log('Error', error.response.data);
+      .catch(function (error) {
+        console.log(error.data);
       })
 
     }
@@ -62,70 +62,64 @@ export default function Signup({navigation}) {
                     keyboardVerticalOffset={30} >
                     <View style={styles.fields}>
 
-                    <View style={styles.fieldGroup}>
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Firstname'}
-                              onChangeText={(firstName) => setFirstName(firstName)}
-                              underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
-                          />
-                      </View>
-
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Lastname'}
-                              onChangeText={(lastName) => setLastName(lastName)}
-                              underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
-                          />
-                      </View>
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Firstname'}
+                            onChangeText={(firstName) => setFirstName(firstName)}
+                            underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
+                        />
                     </View>
 
-                    <View style={styles.fieldGroup}>
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-mail" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Email'}
-                              onChangeText={(emailAddress) => setEmail(emailAddress)}
-                              underlineColorAndroid="transparent" keyboardType="email-address" returnKeyType={'done'}
-                          />
-                      </View>
-
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-mail" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Phone Number'}
-                              onChangeText={(phone) => setPhone(phone)}
-                              underlineColorAndroid="transparent" keyboardType="numeric" returnKeyType={'done'}
-                          />
-                      </View>
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-person" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Lastname'}
+                            onChangeText={(lastName) => setLastName(lastName)}
+                            underlineColorAndroid="transparent" keyboardType="default" returnKeyType={'done'}
+                        />
                     </View>
 
-                    <View style={styles.fieldGroup}>
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-key" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Password'}
-                              onChangeText={(password) => setPassword(password)} returnKeyType={'done'}
-                              underlineColorAndroid="transparent" keyboardType="default" secureTextEntry
-                          />
-                      </View>
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-mail" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Email'}
+                            onChangeText={(email) => setEmail(email)}
+                            underlineColorAndroid="transparent" keyboardType="email-address" returnKeyType={'done'}
+                        />
+                    </View>
 
-                      <View style={styles.inputField}>
-                          <Ionicons style={styles.mainIcon} name="ios-key" size={20} color="#ff9500"/>
-                          <TextInput
-                              style={styles.input}
-                              placeholder={'Confirm Password'}
-                              onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)} returnKeyType={'done'}
-                              underlineColorAndroid="transparent" keyboardType="default" secureTextEntry
-                          />
-                      </View>
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-mail" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Phone Number'}
+                            onChangeText={(phone) => setEmail(phone)}
+                            underlineColorAndroid="transparent" keyboardType="numeric" returnKeyType={'done'}
+                        />
+                    </View>
+
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-key" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Password'}
+                            onChangeText={(password) => setPassword(password)} returnKeyType={'done'}
+                            underlineColorAndroid="transparent" keyboardType="default" secureTextEntry
+                        />
+                    </View>
+
+                    <View style={styles.inputField}>
+                        <Ionicons style={styles.mainIcon} name="ios-key" size={20} color="#ff9500"/>
+                        <TextInput
+                            style={styles.input}
+                            placeholder={'Confirm Password'}
+                            onChangeText={(confirmPassword) => setConfirmPassword(confirmPassword)} returnKeyType={'done'}
+                            underlineColorAndroid="transparent" keyboardType="default" secureTextEntry
+                        />
                     </View>
 
                     <TouchableOpacity style={styles.authButton} onPress={() => register()}>
@@ -241,18 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 20,
     marginVertical: 10,
-    marginRight: 10,
-    width: 250,
-    height: 55
-},
-fieldGroup: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 20,
-    marginVertical: 10,
-    width: 350,
+    width: 300,
     height: 55
 },
 mainIcon: {
@@ -267,7 +250,6 @@ input: {
     backgroundColor: '#fff',
     color: '#424242',
     borderRadius: 20,
-    fontFamily: 'muli-regular',
-    
+    fontFamily: 'muli-regular'
 },
 });
