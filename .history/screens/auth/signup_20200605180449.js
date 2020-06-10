@@ -92,7 +92,7 @@ export default function Signup({navigation}) {
         setSpinner(false);
         setIsLoading(false);
         setSuccessLog(false);
-        console.log('successlog1: ', successLog)
+        console.log(successLog)
         
        } else {
          registerUser()
@@ -103,7 +103,7 @@ export default function Signup({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
 
-        {!successLog && 
+        {/* {successLog == false &&  */}
             <Modal
             visible={visible}
             modalAnimation={new SlideAnimation({
@@ -129,7 +129,7 @@ export default function Signup({navigation}) {
                 }
             </ModalContent>
           </Modal>
-          }
+          {/* } */}
 
             <View style={styles.logoView}>
                 <Image source={appLogo} style={styles.appLogo}></Image>

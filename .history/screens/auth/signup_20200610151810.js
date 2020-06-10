@@ -103,32 +103,8 @@ export default function Signup({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
 
-        {!successLog && 
-            <Modal
-            visible={visible}
-            modalAnimation={new SlideAnimation({
-              slideFrom: 'bottom',
-            })}
-            onSwipeOut={(event) => {
-              setVisible(false);
-            }}
-            footer={
-              <ModalFooter>
-                <ModalButton
-                  text="OK"
-                  onPress={() => {
-                    setVisible(false);
-                  }}
-                />
-              </ModalFooter>
-            }
-            >
-            <ModalContent>
-                { 
-                  successLog == false && <ErrorDialog />
-                }
-            </ModalContent>
-          </Modal>
+        {successLog == false &&  console.log('success is', successLog)
+            
           }
 
             <View style={styles.logoView}>

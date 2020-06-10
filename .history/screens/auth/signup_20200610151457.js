@@ -103,7 +103,7 @@ export default function Signup({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
 
-        {!successLog && 
+        {successLog == false && 
             <Modal
             visible={visible}
             modalAnimation={new SlideAnimation({

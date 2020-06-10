@@ -14,7 +14,6 @@ import axiosHelper from '../../constants/AxiosHelper';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Modal, { ModalTitle, ModalContent, SlideAnimation, ModalFooter, ModalButton } from 'react-native-modals';
-import FeatherIcons from 'react-native-vector-icons/Feather';
 
 export default function Signup({navigation}) {
   
@@ -58,7 +57,6 @@ export default function Signup({navigation}) {
 
       })
       .catch( (error) => {
-        setSuccessLog(false)
         console.log('Error', error, 'successLog', successLog);
       })
 
@@ -92,7 +90,7 @@ export default function Signup({navigation}) {
         setSpinner(false);
         setIsLoading(false);
         setSuccessLog(false);
-        console.log('successlog1: ', successLog)
+        console.log(successLog)
         
        } else {
          registerUser()
@@ -103,7 +101,7 @@ export default function Signup({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
 
-        {!successLog && 
+        {successLog == false && 
             <Modal
             visible={visible}
             modalAnimation={new SlideAnimation({

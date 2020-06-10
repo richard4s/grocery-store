@@ -14,7 +14,6 @@ import axiosHelper from '../../constants/AxiosHelper';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import Modal, { ModalTitle, ModalContent, SlideAnimation, ModalFooter, ModalButton } from 'react-native-modals';
-import FeatherIcons from 'react-native-vector-icons/Feather';
 
 export default function Signup({navigation}) {
   
@@ -34,33 +33,34 @@ export default function Signup({navigation}) {
     //   console.log(firstName, '-', lastName, '-', email, '-', password);
     // });
 
-    // console.log('name', firstName, lastName, 'email: ->', emailAddress, password)
-    console.log(successLog)
+    console.log('name', firstName, lastName, 'email: ->', emailAddress, password)
 
     const registerUser = () => {
 
-      axiosHelper.post('/register', {
-        firstName: firstName,
-        lastName: lastName,
-        email: emailAddress,
-        phone: phone,
-        password: password
-      })
-      .then( (response) => {
-        console.log(response);
+      setSpinner(true);
+      setIsLoading(true);
 
-        setVisible(true);
-        setIsLoading(false)
-        setSpinner(false)
-        setSuccessLog(true)
+        // setVisible(true);
+        // setIsLoading(false)
+        // setSpinner(false)
+        // setSuccessLog(true)
 
-        navigation.navigate('Main')
+      // axiosHelper.post('/register', {
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   email: emailAddress,
+      //   phone: phone,
+      //   password: password
+      // })
+      // .then( (response) => {
+      //   console.log(response);
 
-      })
-      .catch( (error) => {
-        setSuccessLog(false)
-        console.log('Error', error, 'successLog', successLog);
-      })
+        
+
+      // })
+      // .catch( (error) => {
+      //   console.log('Error', error.response.data);
+      // })
 
     }
 
@@ -87,15 +87,15 @@ export default function Signup({navigation}) {
       setSpinner(true);
       setIsLoading(true);
     
-       if (emailAddress === '' || password === '') {
+       if (email === '' || password === '') {
          
         setSpinner(false);
         setIsLoading(false);
-        setSuccessLog(false);
-        console.log('successlog1: ', successLog)
         
        } else {
-         registerUser()
+        //  alert('Please wait...')
+         this.registerUser()
+         
        }
      } 
 
@@ -103,21 +103,21 @@ export default function Signup({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
 
-        {!successLog && 
+        {successLog == false && 
             <Modal
-            visible={visible}
+            visible={this.state.visible}
             modalAnimation={new SlideAnimation({
               slideFrom: 'bottom',
             })}
             onSwipeOut={(event) => {
-              setVisible(false);
+              this.setState({ visible: false });
             }}
             footer={
               <ModalFooter>
                 <ModalButton
                   text="OK"
                   onPress={() => {
-                    setVisible(false);
+                    this.setState({ visible: false });
                   }}
                 />
               </ModalFooter>

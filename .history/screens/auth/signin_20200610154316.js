@@ -19,11 +19,6 @@ export default function Signin({navigation}) {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const [visible, setVisible] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [spinner, setSpinner] = React.useState(false);
-    const [successLog, setSuccessLog] = React.useState(null);
-
     const loginUser = () => {
       axiosHelper.post('/login', {
         email: emailAddress,
@@ -94,7 +89,7 @@ export default function Signin({navigation}) {
                         />
                     </View>
 
-                    <TouchableOpacity style={styles.authButton} onPress={() => _login()}>
+                    <TouchableOpacity style={styles.authButton} onPress={() => {navigation.navigate('Main')}}>
                         <Text style={styles.authText}>Sign in</Text>
                     </TouchableOpacity>
 

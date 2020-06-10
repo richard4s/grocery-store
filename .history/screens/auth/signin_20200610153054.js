@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, AsyncStorage,
   ImageBackground, TextInput, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
@@ -18,11 +18,6 @@ export default function Signin({navigation}) {
 
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
-
-    const [visible, setVisible] = React.useState(false);
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [spinner, setSpinner] = React.useState(false);
-    const [successLog, setSuccessLog] = React.useState(null);
 
     const loginUser = () => {
       axiosHelper.post('/login', {
@@ -79,7 +74,7 @@ export default function Signin({navigation}) {
                         <TextInput
                             style={styles.input}
                             placeholder={'Email'}
-                            onChangeText={(emailAddress) => setEmailAddress(emailAddress)} returnKeyType={'done'}
+                            onChangeText={(emailAddress) => setEmail(emailAddress)} returnKeyType={'done'}
                             underlineColorAndroid="transparent" keyboardType="email-address"
                         />
                     </View>
@@ -94,7 +89,7 @@ export default function Signin({navigation}) {
                         />
                     </View>
 
-                    <TouchableOpacity style={styles.authButton} onPress={() => _login()}>
+                    <TouchableOpacity style={styles.authButton} onPress={() => {navigation.navigate('Main')}}>
                         <Text style={styles.authText}>Sign in</Text>
                     </TouchableOpacity>
 
