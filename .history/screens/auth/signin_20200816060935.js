@@ -1,8 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,
-  ImageBackground, TextInput, TouchableHighlight } from 'react-native';
+  ImageBackground, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 import { MonoText } from '../../components/StyledText';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,6 +14,11 @@ import appLogo from '../../assets/images/logo.png';
 
 import axiosHelper from '../../constants/AxiosHelper';
 
+import Spinner from 'react-native-loading-spinner-overlay';
+
+import Modal, { ModalTitle, ModalContent, SlideAnimation, ModalFooter, ModalButton } from 'react-native-modals';
+import FeatherIcons from 'react-native-vector-icons/Feather';
+
 
 export default function Signin({navigation}) {
     const [ onChangeText] = React.useState('');
@@ -19,7 +26,12 @@ export default function Signin({navigation}) {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const loginUser = () => {
+    const [visible, setVisible] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [spinner, setSpinner] = React.useState(false);
+    const [successLog, setSuccessLog] = React.useState(null);
+
+    const loginUser = async () => {
       axiosHelper.post('/login', {
         email: emailAddress,
         password: password
@@ -32,6 +44,12 @@ export default function Signin({navigation}) {
         setSpinner(false)
         setSuccessLog(true)
 
+        // try {
+        //   await AsyncStorage.setItem('user', response)
+        // } catch (e) {
+        //   // saving error
+        // }
+
         navigation.navigate('Main')
 
       })
@@ -39,6 +57,24 @@ export default function Signin({navigation}) {
         setSuccessLog(false)
         console.log('Error', error, 'successLog', successLog);
       })
+    }
+
+    const SuccessDialog = () => {
+      return(
+        <View>
+          <FeatherIcons style={{ textAlign: "center"}} name="check-circle" size={30} color="green" />
+          <Text>Welcome back!</Text>
+        </View>   
+      )
+    }
+  
+    const ErrorDialog = () => {
+      return(
+        <View>
+          <FeatherIcons style={{ textAlign: "center"}} name="x" size={30} color="red" />
+          <Text>Invalid Credentials. Try again later</Text>
+        </View>   
+      )
     }
 
     _login = () => {
@@ -58,8 +94,38 @@ export default function Signin({navigation}) {
     }
     
   return (
+    
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
+
+        {successLog == false && 
+            <Modal
+            visible={visible}
+            modalAnimation={new SlideAnimation({
+              slideFrom: 'bottom',
+            })}
+            onSwipeOut={(event) => {
+              setVisible(false);
+            }}
+            footer={
+              <ModalFooter>
+                <ModalButton
+                  text="OK"
+                  onPress={() => {
+                    setVisible(false);
+                  }}
+                />
+              </ModalFooter>
+            }
+            >
+            <ModalContent>
+                { 
+                  successLog == false && <ErrorDialog />
+                }
+            </ModalContent>
+          </Modal>
+          }
+
             <View style={styles.logoView}>
                 <Image source={appLogo} style={styles.appLogo}></Image>
             </View>
@@ -89,8 +155,18 @@ export default function Signin({navigation}) {
                         />
                     </View>
 
-                    <TouchableOpacity style={styles.authButton} onPress={() => {navigation.navigate('Main')}}>
-                        <Text style={styles.authText}>Sign in</Text>
+                    <TouchableOpacity style={styles.authButton} onPress={() => _login()}>
+                        <Text style={styles.authText}>Sign in
+                        {
+                          Platform.OS === 'android' ?
+                            <Spinner
+                            visible={this.state.spinner}
+                            textContent={'Loading...'}
+                            textStyle={{color: '#fff'}}
+                          /> :
+                          <ActivityIndicator style={styles.loader} size="small" animating={isLoading} color="#ff9500" />
+                        }
+                        </Text>
                     </TouchableOpacity>
 
                     <View style={styles.bottomView}>
@@ -122,12 +198,20 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   authText: {
+    // fontSize: 16,
+    // fontFamily: 'muli-black',
+    // color: '#ff9f23',
+    // textTransform: 'uppercase',
+    // textAlign: 'center',
+    // paddingVertical: 15,
+
     fontSize: 16,
     fontFamily: 'muli-black',
     color: '#ff9f23',
     textTransform: 'uppercase',
     textAlign: 'center',
-    paddingVertical: 15,
+    paddingTop: 15,
+    paddingBottom: 20,
   },
   authButton: {
     width: 300,
@@ -217,4 +301,10 @@ input: {
     borderRadius: 20,
     fontFamily: 'muli-regular'
 },
+loader: {
+  textAlign: 'center',
+    // paddingVertical: 15,
+  paddingTop: 37,
+  paddingLeft: 10
+}
 });

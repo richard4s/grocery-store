@@ -39,7 +39,7 @@ export default function Signin({navigation}) {
       .then( (response) => {
         console.log(response);
 
-        setVisible(false);
+        setVisible(true);
         setIsLoading(false)
         setSpinner(false)
         setSuccessLog(true)
@@ -129,7 +129,7 @@ export default function Signin({navigation}) {
             >
             <ModalContent>
                 { 
-                  !successLog && <ErrorDialog />
+                  successLog == false && <ErrorDialog />
                 }
             </ModalContent>
           </Modal>

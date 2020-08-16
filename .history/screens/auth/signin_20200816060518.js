@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,
-  ImageBackground, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
+  ImageBackground, TextInput, TouchableHighlight } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -26,10 +26,10 @@ export default function Signin({navigation}) {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const [isVisible, setVisible] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [spinner, setSpinner] = React.useState(false);
-    const [successLog, setSuccessLog] = React.useState(true);
+    const [successLog, setSuccessLog] = React.useState(null);
 
     const loginUser = async () => {
       axiosHelper.post('/login', {
@@ -39,7 +39,7 @@ export default function Signin({navigation}) {
       .then( (response) => {
         console.log(response);
 
-        setVisible(false);
+        setVisible(true);
         setIsLoading(false)
         setSpinner(false)
         setSuccessLog(true)
@@ -54,10 +54,7 @@ export default function Signin({navigation}) {
 
       })
       .catch( (error) => {
-        setVisible(true);
-        setSpinner(false);
         setSuccessLog(false)
-        setIsLoading(false);
         console.log('Error', error, 'successLog', successLog);
       })
     }
@@ -85,12 +82,10 @@ export default function Signin({navigation}) {
       setIsLoading(true);
     
        if (emailAddress === '' || password === '') {
-
-        setVisible(true);
+         
         setSpinner(false);
         setIsLoading(false);
         setSuccessLog(false);
-
         console.log('successlog1: ', successLog)
         
        } else {
@@ -102,14 +97,10 @@ export default function Signin({navigation}) {
     
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
-      
-        {/* {
-          !successLog &&
-            <MonoText>Small Mono </MonoText>
-        } */}
-        {!successLog &&
+
+        {!successLog && 
             <Modal
-            visible={isVisible}
+            visible={visible}
             modalAnimation={new SlideAnimation({
               slideFrom: 'bottom',
             })}
@@ -129,11 +120,11 @@ export default function Signin({navigation}) {
             >
             <ModalContent>
                 { 
-                  !successLog && <ErrorDialog />
+                  successLog == false && <ErrorDialog />
                 }
             </ModalContent>
           </Modal>
-           } 
+          }
 
             <View style={styles.logoView}>
                 <Image source={appLogo} style={styles.appLogo}></Image>
@@ -165,17 +156,7 @@ export default function Signin({navigation}) {
                     </View>
 
                     <TouchableOpacity style={styles.authButton} onPress={() => _login()}>
-                        <Text style={styles.authText}>Sign in
-                        {
-                          Platform.OS === 'android' ?
-                            <Spinner
-                            visible={this.state.spinner}
-                            textContent={'Loading...'}
-                            textStyle={{color: '#fff'}}
-                          /> :
-                          <ActivityIndicator style={styles.loader} size="small" animating={isLoading} color="#ff9500" />
-                        }
-                        </Text>
+                        <Text style={styles.authText}>Sign in</Text>
                     </TouchableOpacity>
 
                     <View style={styles.bottomView}>
@@ -207,20 +188,12 @@ const styles = StyleSheet.create({
     marginTop: 40
   },
   authText: {
-    // fontSize: 16,
-    // fontFamily: 'muli-black',
-    // color: '#ff9f23',
-    // textTransform: 'uppercase',
-    // textAlign: 'center',
-    // paddingVertical: 15,
-
     fontSize: 16,
     fontFamily: 'muli-black',
     color: '#ff9f23',
     textTransform: 'uppercase',
     textAlign: 'center',
-    paddingTop: 15,
-    paddingBottom: 20,
+    paddingVertical: 15,
   },
   authButton: {
     width: 300,
@@ -310,10 +283,4 @@ input: {
     borderRadius: 20,
     fontFamily: 'muli-regular'
 },
-loader: {
-  textAlign: 'center',
-    // paddingVertical: 15,
-  paddingTop: 37,
-  paddingLeft: 10
-}
 });

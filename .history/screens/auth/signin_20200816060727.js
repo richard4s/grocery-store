@@ -1,7 +1,7 @@
 import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View,
-  ImageBackground, TextInput, TouchableHighlight } from 'react-native';
+  ImageBackground, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import AsyncStorage from '@react-native-community/async-storage';
@@ -13,6 +13,11 @@ import bg from '../../assets/images/main-bg.png';
 import appLogo from '../../assets/images/logo.png';
 
 import axiosHelper from '../../constants/AxiosHelper';
+
+import Spinner from 'react-native-loading-spinner-overlay';
+
+import Modal, { ModalTitle, ModalContent, SlideAnimation, ModalFooter, ModalButton } from 'react-native-modals';
+import FeatherIcons from 'react-native-vector-icons/Feather';
 
 
 export default function Signin({navigation}) {
@@ -54,6 +59,24 @@ export default function Signin({navigation}) {
       })
     }
 
+    const SuccessDialog = () => {
+      return(
+        <View>
+          <FeatherIcons style={{ textAlign: "center"}} name="check-circle" size={30} color="green" />
+          <Text>Welcome back!</Text>
+        </View>   
+      )
+    }
+  
+    const ErrorDialog = () => {
+      return(
+        <View>
+          <FeatherIcons style={{ textAlign: "center"}} name="x" size={30} color="red" />
+          <Text>Invalid Credentials. Try again later</Text>
+        </View>   
+      )
+    }
+
     _login = () => {
       setSpinner(true);
       setIsLoading(true);
@@ -71,8 +94,38 @@ export default function Signin({navigation}) {
     }
     
   return (
+    
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
+
+        {!successLog && 
+            <Modal
+            visible={visible}
+            modalAnimation={new SlideAnimation({
+              slideFrom: 'bottom',
+            })}
+            onSwipeOut={(event) => {
+              setVisible(false);
+            }}
+            footer={
+              <ModalFooter>
+                <ModalButton
+                  text="OK"
+                  onPress={() => {
+                    setVisible(false);
+                  }}
+                />
+              </ModalFooter>
+            }
+            >
+            <ModalContent>
+                { 
+                  successLog == false && <ErrorDialog />
+                }
+            </ModalContent>
+          </Modal>
+          }
+
             <View style={styles.logoView}>
                 <Image source={appLogo} style={styles.appLogo}></Image>
             </View>
@@ -103,7 +156,17 @@ export default function Signin({navigation}) {
                     </View>
 
                     <TouchableOpacity style={styles.authButton} onPress={() => _login()}>
-                        <Text style={styles.authText}>Sign in</Text>
+                        <Text style={styles.authText}>Sign in
+                        {
+                          Platform.OS === 'android' ?
+                            <Spinner
+                            visible={this.state.spinner}
+                            textContent={'Loading...'}
+                            textStyle={{color: '#fff'}}
+                          /> :
+                          <ActivityIndicator style={styles.loader} size="small" animating={isLoading} color="#ff9500" />
+                        }
+                        </Text>
                     </TouchableOpacity>
 
                     <View style={styles.bottomView}>

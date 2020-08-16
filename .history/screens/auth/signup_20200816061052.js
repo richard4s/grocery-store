@@ -58,8 +58,6 @@ export default function Signup({navigation}) {
 
       })
       .catch( (error) => {
-        setVisible(true);
-        setSpinner(false);
         setSuccessLog(false)
         setIsLoading(false);
         console.log('Error', error, 'successLog', successLog);

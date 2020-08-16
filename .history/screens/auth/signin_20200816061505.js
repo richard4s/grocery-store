@@ -26,10 +26,10 @@ export default function Signin({navigation}) {
     const [emailAddress, setEmailAddress] = React.useState('');
     const [password, setPassword] = React.useState('');
 
-    const [isVisible, setVisible] = React.useState(false);
+    const [visible, setVisible] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
     const [spinner, setSpinner] = React.useState(false);
-    const [successLog, setSuccessLog] = React.useState(true);
+    const [successLog, setSuccessLog] = React.useState(null);
 
     const loginUser = async () => {
       axiosHelper.post('/login', {
@@ -39,7 +39,7 @@ export default function Signin({navigation}) {
       .then( (response) => {
         console.log(response);
 
-        setVisible(false);
+        setVisible(true);
         setIsLoading(false)
         setSpinner(false)
         setSuccessLog(true)
@@ -54,8 +54,6 @@ export default function Signin({navigation}) {
 
       })
       .catch( (error) => {
-        setVisible(true);
-        setSpinner(false);
         setSuccessLog(false)
         setIsLoading(false);
         console.log('Error', error, 'successLog', successLog);
@@ -85,12 +83,10 @@ export default function Signin({navigation}) {
       setIsLoading(true);
     
        if (emailAddress === '' || password === '') {
-
-        setVisible(true);
+         
         setSpinner(false);
         setIsLoading(false);
         setSuccessLog(false);
-
         console.log('successlog1: ', successLog)
         
        } else {
@@ -103,13 +99,13 @@ export default function Signin({navigation}) {
     <View style={styles.container}>
         <ImageBackground source={bg} style={styles.imgContainer}>
       
-        {/* {
+        {
           !successLog &&
-            <MonoText>Small Mono </MonoText>
-        } */}
-        {!successLog &&
+            <MonoText>Small Mono</MonoText>
+        }
+        {/* {!successLog ? 
             <Modal
-            visible={isVisible}
+            visible={visible}
             modalAnimation={new SlideAnimation({
               slideFrom: 'bottom',
             })}
@@ -129,11 +125,14 @@ export default function Signin({navigation}) {
             >
             <ModalContent>
                 { 
-                  !successLog && <ErrorDialog />
+                  successLog == false && <ErrorDialog />
                 }
             </ModalContent>
           </Modal>
-           } 
+
+          : 
+          <MonoText>Not error</MonoText>
+          } */}
 
             <View style={styles.logoView}>
                 <Image source={appLogo} style={styles.appLogo}></Image>
